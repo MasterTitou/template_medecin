@@ -1,0 +1,83 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+
+const services = [
+  {
+    title: "Médecine de Famille",
+    description: "Suivi complet pour petits et grands, de la naissance à l'âge adulte. Prévention et soins courants.",
+    icon: "users"
+  },
+  {
+    title: "Contrôle Annuel",
+    description: "Bilan de santé complet, prises de sang, électrocardiogramme et dépistages adaptés à votre profil.",
+    icon: "heart"
+  },
+  {
+    title: "Vaccination",
+    description: "Mise à jour de vos vaccins et conseils personnalisés pour vos voyages à l'étranger.",
+    icon: "shield"
+  },
+  {
+    title: "Sutures et Petite Chirurgie",
+    description: "Prise en charge rapide des plaies, sutures et ablation de lésions cutanées bénignes.",
+    icon: "scissors"
+  },
+  {
+    title: "Suivi de Maladies Chroniques",
+    description: "Gestion coordonnée du diabète, de l'hypertension et autres pathologies de longue durée.",
+    icon: "document"
+  },
+  {
+    title: "Gériatrie",
+    description: "Soins spécialisés pour nos aînés, maintien de l'autonomie et visites à domicile sur demande.",
+    icon: "home"
+  }
+];
+---
+
+<Layout title="Services">
+	<section class="py-20 bg-slate-50 dark:bg-slate-950">
+		<div class="container mx-auto px-4 sm:px-6 lg:px-8">
+			<div class="text-center mb-16 max-w-3xl mx-auto">
+				<h1 class="text-4xl font-extrabold text-slate-900 dark:text-white mb-6">Nos Services Médicaux</h1>
+				<p class="text-lg text-slate-600 dark:text-slate-400">
+					Une gamme complète de soins de santé primaires pour assurer votre bien-être et celui de votre famille à Liège.
+				</p>
+				<div class="w-24 h-1 bg-belgian-teal mx-auto mt-8"></div>
+			</div>
+			
+			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+				{services.map((service) => (
+					<Card 
+						title={service.title} 
+						description={service.description}
+						className="h-full"
+					>
+						<span slot="icon">
+							{service.icon === "users" && <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>}
+							{service.icon === "heart" && <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>}
+							{service.icon === "shield" && <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>}
+							{service.icon === "scissors" && <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 11-4.243 4.243 3 3 0 014.243-4.243zm0-5.758a3 3 0 11-4.243-4.243 3 3 0 014.243 4.243z" /></svg>}
+							{service.icon === "document" && <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>}
+							{service.icon === "home" && <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>}
+						</span>
+					</Card>
+				))}
+			</div>
+			
+			<div class="mt-20 p-10 bg-gradient-to-r from-belgian-teal to-liege-orange rounded-3xl text-white shadow-2xl relative overflow-hidden group">
+				<div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+				<div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+					<div class="text-center md:text-left">
+						<h3 class="text-2xl font-bold mb-2">Besoin d'un rendez-vous urgent ?</h3>
+						<p class="text-white/80">Nous réservons des plages horaires pour les urgences chaque jour.</p>
+					</div>
+					<a href="/contact" class="px-8 py-4 bg-white text-belgian-teal font-bold rounded-lg shadow-lg hover:bg-slate-50 transition-all hover:scale-105">
+						Contactez le secrétariat
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</Layout>
