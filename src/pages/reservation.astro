@@ -1,0 +1,95 @@
+---
+import Layout from '../layouts/Layout.astro';
+const username = import.meta.env.PUBLIC_CAL_USERNAME || "tristan-kosc-amsjmu";
+---
+
+<Layout title="Réservez votre consultation" description="Prenez rendez-vous en ligne avec le Dr. Liégeois via notre plateforme sécurisée.">
+  <section class="py-12 md:py-20 lg:py-24 bg-slate-50 dark:bg-slate-950 relative overflow-hidden">
+    <!-- Decorations -->
+    <div class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-[500px] h-[500px] bg-medical-blue/5 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-medical-blue/5 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <nav class="flex mb-8 items-center text-sm font-medium text-slate-500 dark:text-slate-400 gap-2">
+        <a href="/" class="hover:text-medical-blue transition-colors">Accueil</a>
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+        <span class="text-slate-900 dark:text-white">Réservation</span>
+      </nav>
+
+      <div class="max-w-4xl mx-auto text-center mb-12">
+        <span class="inline-block px-4 py-1.5 mb-6 text-sm font-bold tracking-wider text-medical-blue uppercase bg-medical-blue-light rounded-full dark:bg-blue-900/30 dark:text-blue-400">
+          Disponibilités en temps réel
+        </span>
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white mb-6">
+          Prendre <span class="text-medical-blue">Rendez-vous</span>
+        </h1>
+        <p class="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          Sélectionnez le type de consultation et le créneau qui vous conviennent le mieux ci-dessous.
+        </p>
+      </div>
+
+      <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 min-h-[800px] relative">
+        <div id="loading-spinner" class="absolute inset-0 flex items-center justify-center bg-white dark:bg-slate-900 z-10 transition-opacity duration-500">
+          <div class="flex flex-col items-center">
+            <div class="w-12 h-12 border-4 border-medical-blue/20 border-t-medical-blue rounded-full animate-spin"></div>
+            <p class="mt-4 text-slate-500 animate-pulse">Chargement du calendrier...</p>
+          </div>
+        </div>
+
+        <!-- Cal inline embed code -->
+        <div 
+            style="width:100%;height:800px;overflow:auto" 
+            id="my-cal-inline"
+            class="opacity-0 transition-opacity duration-700"
+        ></div>
+        
+        <script is:inline define:vars={{ username }}>
+          // Wait for Cal to be initialized and DOM to be ready
+          const initCal = () => {
+            if (typeof Cal !== 'undefined') {
+              Cal("inline", {
+                elementOrSelector: "#my-cal-inline",
+                calLink: username,
+                layout: "month_view",
+                config: {
+                   theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+                }
+              });
+              
+              // Show the calendar and hide loader
+              setTimeout(() => {
+                const calElement = document.getElementById('my-cal-inline');
+                const loader = document.getElementById('loading-spinner');
+                if (calElement) calElement.classList.remove('opacity-0');
+                if (loader) loader.classList.add('opacity-0', 'pointer-events-none');
+              }, 1000);
+            } else {
+              setTimeout(initCal, 100);
+            }
+          };
+
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initCal);
+          } else {
+            initCal();
+          }
+        </script>
+      </div>
+      
+      <div class="mt-16 bg-medical-blue-light dark:bg-blue-900/10 rounded-2xl p-8 border border-medical-blue/10 flex flex-col md:flex-row items-center justify-between gap-6 max-w-4xl mx-auto">
+        <div class="text-center md:text-left">
+          <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-2">Besoin d'aide ?</h3>
+          <p class="text-slate-600 dark:text-slate-400">Si vous ne trouvez pas de créneau qui vous convient, contactez notre secrétariat.</p>
+        </div>
+        <a href="tel:+32000000000" class="inline-flex items-center gap-2 px-6 py-3 bg-white dark:bg-slate-800 text-medical-blue font-bold rounded-xl shadow-sm hover:shadow-md transition-all">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+          </svg>
+          0400 00 00 00
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

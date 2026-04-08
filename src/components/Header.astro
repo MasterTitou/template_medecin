@@ -1,8 +1,11 @@
 ---
+import CalBooking from './CalBooking.astro';
+
 const navItems = [
   { name: 'Accueil', href: '/' },
   { name: 'À propos', href: '/about' },
   { name: 'Services', href: '/services' },
+  { name: 'Rendez-vous', href: '/reservation' },
   { name: 'Contact', href: '/contact' },
 ];
 ---
@@ -32,12 +35,11 @@ const navItems = [
         ))}
         <div class="flex items-center gap-4 border-l pl-4 border-slate-200 dark:border-slate-800">
           <slot name="theme-toggle" />
-          <a
-            href="/contact"
-            class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-medical-blue hover:bg-medical-blue/90 transition-all shadow-sm hover:shadow-md focus:outline-none"
-          >
-            Prendre RDV
-          </a>
+          <CalBooking 
+            text="Prendre RDV" 
+            variant="primary" 
+            class="!text-sm !py-2 !px-4 shadow-sm hover:shadow-md"
+          />
         </div>
       </nav>
 
@@ -65,12 +67,11 @@ const navItems = [
           {item.name}
         </a>
       ))}
-      <a
-        href="/contact"
-        class="block px-3 py-2 rounded-md text-base font-medium text-white bg-medical-blue hover:bg-medical-blue/90"
-      >
-        Prendre RDV
-      </a>
+      <CalBooking 
+        text="Prendre RDV" 
+        variant="primary" 
+        class="w-full justify-start !text-base"
+      />
     </div>
   </div>
 </header>

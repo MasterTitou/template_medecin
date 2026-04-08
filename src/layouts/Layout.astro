@@ -58,6 +58,44 @@ const { title, description = "Site officiel d'un médecin généraliste dévoué
 				document.documentElement.classList.remove('dark');
 			}
 		</script>
+
+		<!-- Cal.com Embed Service -->
+		<script is:inline>
+		  (function (C, A, L) {
+		    let p = function (a, ar) {
+		      a.q.push(ar);
+		    };
+		    let d = C.document;
+		    C.Cal =
+		      C.Cal ||
+		      function () {
+		        let cal = C.Cal;
+		        let ar = arguments;
+		        if (!cal.loaded) {
+		          cal.q = cal.q || [];
+		          cal.t = +new Date();
+		          cal.loaded = true;
+		          let s = d.createElement("script");
+		          s.src = A;
+		          d.head.appendChild(s);
+		        }
+		        return p(cal, ar);
+		      };
+		  })(window, "https://app.cal.com/embed/embed.js");
+
+		  Cal("init", { origin: "https://app.cal.com" });
+
+		  // Initialize background theme
+		  const isDark = typeof localStorage !== 'undefined' && localStorage.getItem('theme') === 'dark' 
+		    || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+		  
+		  Cal("ui", {
+		    theme: isDark ? "dark" : "light",
+		    styles: { branding: { brandColor: "#2563eb" } },
+		    hideEventTypeDetails: false,
+		    layout: "month_view",
+		  });
+		</script>
 	</head>
 	<body class="bg-slate-50 text-slate-900 selection:bg-medical-blue/30 dark:bg-slate-950 dark:text-slate-100 min-h-screen font-['Inter',_sans-serif] flex flex-col">
 		<Header>

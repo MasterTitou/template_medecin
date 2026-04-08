@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
+import CalBooking from '../components/CalBooking.astro';
 ---
 
 <Layout title="Accueil">
@@ -16,11 +17,9 @@ import Card from '../components/Card.astro';
 						Le Dr. Liégeois vous accueille dans son cabinet moderne pour des soins personnalisés et de qualité. Médecine générale, prévention et suivi pour toute la famille.
 					</p>
 					<div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-						<a href="/contact" class="px-8 py-4 bg-medical-blue text-white font-bold rounded-lg shadow-lg hover:bg-medical-blue/90 transition-all hover:scale-105">
-							Prendre RDV en ligne
-						</a>
-						<a href="/services" class="px-8 py-4 bg-white border border-slate-200 text-slate-700 font-bold rounded-lg shadow-sm hover:bg-slate-50 transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:hover:bg-slate-700">
-							Nos Services
+						<CalBooking text="Prendre RDV (Popup)" />
+						<a href="/reservation" class="px-8 py-4 bg-white border border-slate-200 text-slate-700 font-bold rounded-lg shadow-sm hover:bg-slate-50 transition-all dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:hover:bg-slate-700 inline-flex items-center justify-center">
+							Page de Réservation
 						</a>
 					</div>
 				</div>
