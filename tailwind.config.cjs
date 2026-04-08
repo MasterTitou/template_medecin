@@ -4,13 +4,14 @@ module.exports = {
     "./src/**/*.{astro,html,js,jsx,ts,tsx,vue,svelte}",
     "./public/**/*.html",
   ],
-  darkMode: "media", // or 'class'
+  darkMode: "class", // or 'media'
   theme: {
     extend: {
       colors: {
-        // Belgian teal and Liège orange
-        "belgian-teal": "#006A71",
-        "liege-orange": "#E67300",
+        // Medical Royal Blue theme
+        "medical-blue": "#2563eb",
+        "medical-blue-dark": "#1e40af",
+        "medical-blue-light": "#eff6ff",
       },
       backdropBlur: {
         xs: "2px",
