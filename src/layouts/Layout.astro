@@ -1,6 +1,7 @@
 ---
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
 
 interface Props {
 	title: string;
@@ -38,9 +39,30 @@ const { title, description = "Site officiel d'un médecin généraliste dévoué
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+		
+		<!-- Theme logic to prevent FOUC -->
+		<script is:inline>
+			const theme = (() => {
+				if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+					return localStorage.getItem('theme');
+				}
+				if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+					return 'dark';
+				}
+				return 'light';
+			})();
+		
+			if (theme === 'dark') {
+				document.documentElement.classList.add('dark');
+			} else {
+				document.documentElement.classList.remove('dark');
+			}
+		</script>
 	</head>
 	<body class="bg-slate-50 text-slate-900 selection:bg-medical-blue/30 dark:bg-slate-950 dark:text-slate-100 min-h-screen font-['Inter',_sans-serif] flex flex-col">
-		<Header />
+		<Header>
+			<ThemeToggle slot="theme-toggle" />
+		</Header>
 		<main class="flex-grow">
 			<slot />
 		</main>

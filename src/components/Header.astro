@@ -30,16 +30,20 @@ const navItems = [
             {item.name}
           </a>
         ))}
-        <a
-          href="/contact"
-          class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-medical-blue hover:bg-medical-blue/90 transition-all shadow-sm hover:shadow-md focus:outline-none"
-        >
-          Prendre RDV
-        </a>
+        <div class="flex items-center gap-4 border-l pl-4 border-slate-200 dark:border-slate-800">
+          <slot name="theme-toggle" />
+          <a
+            href="/contact"
+            class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-medical-blue hover:bg-medical-blue/90 transition-all shadow-sm hover:shadow-md focus:outline-none"
+          >
+            Prendre RDV
+          </a>
+        </div>
       </nav>
 
       <!-- Mobile menu button -->
-      <div class="md:hidden flex items-center">
+      <div class="md:hidden flex items-center gap-4">
+        <slot name="theme-toggle" />
         <button type="button" class="text-slate-600 hover:text-medical-blue focus:outline-none dark:text-slate-300 dark:hover:text-medical-blue-dark" id="mobile-menu-button">
           <span class="sr-only">Ouvrir le menu</span>
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
