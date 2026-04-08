@@ -46,9 +46,8 @@ const username = import.meta.env.PUBLIC_CAL_USERNAME || "votre-slug-cal";
         ></div>
         
         <script is:inline define:vars={{ username }}>
-          // Wait for Cal to be initialized and DOM to be ready
           const initCal = () => {
-            if (!username || username === "undefined") {
+            if (!username || username === "votre-slug-cal" || username === "undefined") {
               console.error("Cal.com: Username is missing. Check your PUBLIC_CAL_USERNAME env var.");
               const loader = document.getElementById('loading-spinner');
               if (loader) loader.innerHTML = "<div class='text-center p-8'><p class='text-red-500 font-bold'>Erreur de configuration</p><p class='text-slate-500 text-sm'>Le lien de réservation n'est pas défini.</p></div>";
@@ -84,11 +83,13 @@ const username = import.meta.env.PUBLIC_CAL_USERNAME || "votre-slug-cal";
             }
           };
 
+          // Support for both standard load and Astro View Transitions
           if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', initCal);
           } else {
             initCal();
           }
+          document.addEventListener('astro:page-load', initCal);
         </script>
       </div>
       
