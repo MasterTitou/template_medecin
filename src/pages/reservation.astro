@@ -25,9 +25,40 @@ const username = import.meta.env.PUBLIC_CAL_USERNAME || "votre-slug-cal";
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-white mb-6">
           Prendre <span class="text-medical-blue">Rendez-vous</span>
         </h1>
-        <p class="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-          Sélectionnez le type de consultation et le créneau qui vous conviennent le mieux ci-dessous.
+        <p class="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10">
+          Veuillez sélectionner le type de service pour afficher les disponibilités correspondantes.
         </p>
+
+        <!-- Service Selector Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
+          <button 
+            id="btn-consultation"
+            class="flex flex-col items-center p-6 bg-white dark:bg-slate-900 rounded-2xl border-2 border-medical-blue shadow-lg hover:shadow-xl transition-all group scale-105"
+            data-slug="consultation"
+          >
+            <div class="w-14 h-14 bg-medical-blue-light dark:bg-blue-900/30 rounded-full flex items-center justify-center text-medical-blue mb-4 transition-transform group-hover:scale-110">
+              <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Consultation</h3>
+            <p class="text-sm text-slate-500 mt-2">Suivi médical classique</p>
+          </button>
+
+          <button 
+            id="btn-prisedesang"
+            class="flex flex-col items-center p-6 bg-white dark:bg-slate-900 rounded-2xl border-2 border-transparent shadow-md hover:shadow-lg transition-all group hover:border-medical-blue/30"
+            data-slug="prise-de-sang"
+          >
+            <div class="w-14 h-14 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center text-slate-600 dark:text-slate-400 mb-4 transition-transform group-hover:scale-110 group-hover:bg-medical-blue-light group-hover:text-medical-blue">
+              <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.183.394l-1.158.907a.5.5 0 00.196.884l1.658.261a2 2 0 011.512 1.512l.261 1.658a.5.5 0 00.884.196l.907-1.158a2 2 0 01.394-1.183l.158-.318a2 2 0 00.517-3.86l-.158-.318a2 2 0 00-3.86.517l-.318.158a2 2 0 00-1.183.394l-1.158.907a.5.5 0 00.196.884" />
+              </svg>
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 dark:text-white">Prise de sang</h3>
+            <p class="text-sm text-slate-500 mt-2">Analyses de laboratoire</p>
+          </button>
+        </div>
       </div>
 
       <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 min-h-[800px] relative">
@@ -46,50 +77,98 @@ const username = import.meta.env.PUBLIC_CAL_USERNAME || "votre-slug-cal";
         ></div>
         
         <script is:inline define:vars={{ username }}>
-          const initCal = () => {
+          let currentSlug = "consultation";
+          
+          const initCal = (slug = currentSlug) => {
             if (!username || username === "votre-slug-cal" || username === "undefined") {
-              console.error("Cal.com: Username is missing. Check your PUBLIC_CAL_USERNAME env var.");
-              const loader = document.getElementById('loading-spinner');
-              if (loader) loader.innerHTML = "<div class='text-center p-8'><p class='text-red-500 font-bold'>Erreur de configuration</p><p class='text-slate-500 text-sm'>Le lien de réservation n'est pas défini.</p></div>";
+              console.error("Cal.com: Username is missing.");
               return;
             }
 
+            const loader = document.getElementById('loading-spinner');
+            const calElement = document.getElementById('my-cal-inline');
+            
+            // Show loader during transition
+            if (loader) {
+              loader.classList.remove('opacity-0', 'pointer-events-none');
+              loader.style.display = 'flex';
+            }
+            if (calElement) calElement.classList.add('opacity-0');
+
             if (typeof Cal !== 'undefined') {
               try {
+                // Clear previous build
+                calElement.innerHTML = ""; 
+
                 Cal("inline", {
                   elementOrSelector: "#my-cal-inline",
-                  calLink: username,
+                  calLink: `${username}/${slug}`,
                   layout: "month_view",
                   config: {
                      theme: document.documentElement.classList.contains('dark') ? 'dark' : 'light'
                   }
                 });
                 
-                // Show the calendar and hide loader
                 setTimeout(() => {
-                  const calElement = document.getElementById('my-cal-inline');
-                  const loader = document.getElementById('loading-spinner');
                   if (calElement) calElement.classList.remove('opacity-0');
                   if (loader) {
                     loader.classList.add('opacity-0', 'pointer-events-none');
-                    setTimeout(() => loader.remove(), 500);
                   }
                 }, 800);
               } catch (e) {
                 console.error("Cal.com initialization failed:", e);
               }
             } else {
-              setTimeout(initCal, 100);
+              setTimeout(() => initCal(slug), 100);
             }
           };
 
+          const setupButtons = () => {
+            const btnConsult = document.getElementById('btn-consultation');
+            const btnBlood = document.getElementById('btn-prisedesang');
+
+            const setActive = (activeBtn, inactiveBtn) => {
+              activeBtn.classList.add('border-medical-blue', 'shadow-lg', 'scale-105');
+              activeBtn.classList.remove('border-transparent', 'shadow-md');
+              activeBtn.querySelector('div').classList.add('bg-medical-blue-light', 'text-medical-blue');
+              activeBtn.querySelector('div').classList.remove('bg-slate-100', 'text-slate-600');
+              
+              inactiveBtn.classList.remove('border-medical-blue', 'shadow-lg', 'scale-105');
+              inactiveBtn.classList.add('border-transparent', 'shadow-md');
+              inactiveBtn.querySelector('div').classList.remove('bg-medical-blue-light', 'text-medical-blue');
+              inactiveBtn.querySelector('div').classList.add('bg-slate-100', 'text-slate-600');
+            };
+
+            btnConsult?.addEventListener('click', () => {
+              if (currentSlug !== "consultation") {
+                currentSlug = "consultation";
+                setActive(btnConsult, btnBlood);
+                initCal("consultation");
+              }
+            });
+
+            btnBlood?.addEventListener('click', () => {
+              if (currentSlug !== "prise-de-sang") {
+                currentSlug = "prise-de-sang";
+                setActive(btnBlood, btnConsult);
+                initCal("prise-de-sang");
+              }
+            });
+          };
+
           // Support for both standard load and Astro View Transitions
-          if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initCal);
-          } else {
+          const startup = () => {
+            setupButtons();
             initCal();
+          };
+
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', startup);
+          } else {
+            startup();
           }
-          document.addEventListener('astro:page-load', initCal);
+          
+          document.addEventListener('astro:page-load', startup);
         </script>
       </div>
       
