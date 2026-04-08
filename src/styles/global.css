@@ -1,6 +1,37 @@
 @import "tailwindcss";
 
+@theme {
+  /* Medical Royal Blue theme */
+  --color-medical-blue: #2563eb;
+  --color-medical-blue-dark: #1e40af;
+  --color-medical-blue-light: #eff6ff;
+
+  --backdrop-blur-xs: 2px;
+}
+
+/* 
+  Tailwind 4 Dark Mode Configuration:
+  The default 'dark:' variant follows system preferences (media query).
+  We override it to use the '.dark' class on the html element.
+*/
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Custom glassmorphism utilities */
-.bg-glass {
-  @apply bg-white/10 backdrop-blur-xs border border-white/20 rounded-lg;
+@layer utilities {
+  .bg-glass {
+    background-color: rgb(255 255 255 / 0.1);
+    backdrop-filter: blur(2px);
+    border: 1px solid rgb(255 255 255 / 0.2);
+    border-radius: 0.5rem;
+  }
+  
+  :is(.dark) .bg-glass {
+    background-color: rgb(15 23 42 / 0.4); /* slate-900 with opacity */
+    border-color: rgb(255 255 255 / 0.1);
+  }
+}
+
+/* Smooth transitions for theme toggle */
+body {
+  @apply transition-colors duration-300;
 }
