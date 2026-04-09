@@ -1,7 +1,9 @@
----
 import CalBooking from './CalBooking.astro';
+
+const isHome = Astro.url.pathname === "/" || Astro.url.pathname === "/index.html";
 ---
 
+{!isHome && (
 <div class="fixed bottom-0 left-0 right-0 z-[100] p-4 bg-white/80 backdrop-blur-lg border-t border-slate-200 dark:bg-slate-900/80 dark:border-slate-800 md:hidden flex justify-center items-center shadow-[0_-8px_32px_-12px_rgba(0,0,0,0.1)] transition-transform duration-300" id="sticky-cta">
   <CalBooking 
     text="Prendre RDV" 
@@ -9,6 +11,7 @@ import CalBooking from './CalBooking.astro';
     class="w-full h-12 !rounded-xl shadow-lg font-bold text-lg active:scale-95 transition-all" 
   />
 </div>
+)}
 
 <style>
   #sticky-cta {
