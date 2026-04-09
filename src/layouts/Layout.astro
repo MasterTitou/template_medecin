@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
+import MobileStickyCTA from '../components/MobileStickyCTA.astro';
 
 interface Props {
 	title: string;
@@ -112,8 +113,30 @@ const { title, description = "Site officiel d'un médecin généraliste dévoué
 			<slot />
 		</main>
 		<Footer />
+		<MobileStickyCTA />
 		<style is:global>
 			@import "../styles/global.css";
 		</style>
+		<script>
+			let lastScroll = 0;
+			const body = document.body;
+
+			window.addEventListener("scroll", () => {
+				const currentScroll = window.pageYOffset;
+				if (currentScroll <= 0) {
+					body.classList.remove("scroll-up");
+					return;
+				}
+
+				if (currentScroll > lastScroll && !body.classList.contains("scroll-down")) {
+					body.classList.remove("scroll-up");
+					body.classList.add("scroll-down");
+				} else if (currentScroll < lastScroll && body.classList.contains("scroll-down")) {
+					body.classList.remove("scroll-down");
+					body.classList.add("scroll-up");
+				}
+				lastScroll = currentScroll;
+			});
+		</script>
 	</body>
 </html>
